@@ -1,5 +1,7 @@
 # frontend
 
+Vue webapp to study and practice frontend skills and REST API integration
+
 ## Project setup
 ```
 npm install
