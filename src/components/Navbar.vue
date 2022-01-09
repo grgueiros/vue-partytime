@@ -11,9 +11,9 @@
         >Cadastrar</router-link
       >
       <router-link v-show="authenticated" to="/dashboard"
-        >Configurações</router-link
+        >Dashboard</router-link
       >
-      <router-link v-show="authenticated" to="/profile">Meu perfil</router-link>
+      <router-link v-show="authenticated" to="/perfil">Configurações</router-link>
       <button @click.prevent="logout()" v-show="authenticated">Logout</button>
     </nav>
   </div>

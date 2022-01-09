@@ -58,10 +58,15 @@ import Message from "./Message.vue";
 
 export default {
   name: "UserForm",
+  props: {
+    user: Object,
+    btnText: String,
+    page: String,
+  },
   data() {
     return {
-      name: "",
-      email: "",
+      name: this.user.name || "",
+      email: this.user.email || "",
       password: "",
       confirmPassword: "",
       msg: null,
@@ -71,11 +76,6 @@ export default {
   components: {
     InputSubmit,
     Message,
-  },
-  props: {
-    user: Object,
-    btnText: String,
-    page: String,
   },
 
   methods: {
@@ -112,8 +112,34 @@ export default {
       this.msgClass = "error";
     },
 
-    onUpdateSubmit(evento) {
-      console.log(evento, "update");
+    async onUpdateSubmit() {
+      const { userId: id, token } = this.$store.getters;
+
+      const userToUpdate = {
+        id,
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        confirmPassword: this.confirmPassword,
+      };
+
+      const res = await fetch("http://localhost:8000/api/users", {
+        method: "PUT",
+        body: JSON.stringify(userToUpdate),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 204) {
+        this.msg = "Usuário editado com sucesso"
+        this.msgClass = "success"
+        return
+      }
+
+      this.msg = "Erro ao salvar o usuário. Por favor tente novamente";
+      this.msgClass = "error";
     },
   },
 };
